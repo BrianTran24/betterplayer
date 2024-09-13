@@ -154,7 +154,7 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
     double barHeight,
   ) {
     final isFullScreen = _betterPlayerController?.isFullScreen == true;
-    final custtomWidget = widget.controlsConfiguration.customControllerWidget ?? SizedBox();
+    Widget customWidget = widget.controlsConfiguration.customControllerWidget?.call() ?? SizedBox();
     if (!betterPlayerController!.controlsEnabled) {
       return const SizedBox();
     }
@@ -209,7 +209,7 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
               ),
             ),
           ),
-          isFullScreen ? custtomWidget : SizedBox()
+          isFullScreen ? customWidget : SizedBox()
         ],
       ),
     );

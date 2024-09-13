@@ -161,7 +161,7 @@ class BetterPlayerControlsConfiguration {
   ///Color of text in bottom modal sheet used for overflow menu items.
   final Color overflowModalTextColor;
 
-  final Widget? customControllerWidget;
+  final Widget Function()? customControllerWidget;
 
   const BetterPlayerControlsConfiguration({
     this.controlBarColor = Colors.black87,
