@@ -53,6 +53,23 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
   @override
   BetterPlayerControlsConfiguration get betterPlayerControlsConfiguration => _controlsConfiguration;
 
+  void onLockScreen() {
+    if (lockScreen) {
+      lockScreen = false;
+    } else {
+      lockScreen = true;
+    }
+    setState(() {});
+  }
+
+  bool lockScreen = false;
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildLTRDirectionality(_buildMainWidget());
@@ -96,6 +113,27 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
         barHeight,
       ),
     ]);
+
+    if (lockScreen) {
+      return GestureDetector(
+        onTap: () {
+          if (BetterPlayerMultipleGestureDetector.of(context) != null) {
+            BetterPlayerMultipleGestureDetector.of(context)!.onTap?.call();
+          }
+          controlsNotVisible ? cancelAndRestartTimer() : changePlayerControlsNotVisible(true);
+        },
+        onLongPress: (){
+          onLockScreen();
+        },
+        child: AnimatedOpacity(
+          opacity: controlsNotVisible ? 0.0 : 1.0,
+          duration: _controlsConfiguration.controlsHideTime,
+          onEnd: _onPlayerHide,
+          child: widget.controlsConfiguration.lockScreenWidget?.call() ?? SizedBox(),
+        ),
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         if (BetterPlayerMultipleGestureDetector.of(context) != null) {
@@ -116,7 +154,9 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
         }
       },
       child: AbsorbPointer(
-          absorbing: controlsNotVisible, child: isFullScreen ? SafeArea(child: controlsColumn) : controlsColumn),
+        absorbing: controlsNotVisible,
+        child: isFullScreen ? controlsColumn : controlsColumn,
+      ),
     );
   }
 
@@ -154,7 +194,44 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
     double barHeight,
   ) {
     final isFullScreen = _betterPlayerController?.isFullScreen == true;
-    Widget customWidget = widget.controlsConfiguration.customControllerWidget?.call() ?? SizedBox();
+    Widget customWidget = SafeArea(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: const Offset(0, 4), // changes position of shadow
+            )
+          ],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black.withOpacity(0.3),
+              Colors.black.withOpacity(0.8),
+            ],
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            widget.controlsConfiguration.castingWidget?.call()??SizedBox(),
+            widget.controlsConfiguration.pipWidget?.call()??SizedBox(),
+            widget.controlsConfiguration.favoritesWidget?.call()??SizedBox(),
+            widget.controlsConfiguration.timeLockWidget?.call()??SizedBox(),
+            GestureDetector(
+              child: widget.controlsConfiguration.lockWidget?.call()??SizedBox(),
+              onTap: () {
+                onLockScreen();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
     if (!betterPlayerController!.controlsEnabled) {
       return const SizedBox();
     }
@@ -774,5 +851,19 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
         }
       },
     );
+  }
+}
+
+class LockScreenLandscape extends StatefulWidget {
+  const LockScreenLandscape({super.key});
+
+  @override
+  State<LockScreenLandscape> createState() => _LockScreenLandscapeState();
+}
+
+class _LockScreenLandscapeState extends State<LockScreenLandscape> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

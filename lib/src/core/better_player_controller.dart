@@ -1304,4 +1304,8 @@ class BetterPlayerController {
       _tempFiles.forEach((file) => file.delete());
     }
   }
+
+
+
+  VoidCallback? onLockScreen;
 }

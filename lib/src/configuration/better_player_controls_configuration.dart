@@ -161,7 +161,16 @@ class BetterPlayerControlsConfiguration {
   ///Color of text in bottom modal sheet used for overflow menu items.
   final Color overflowModalTextColor;
 
-  final Widget Function()? customControllerWidget;
+  final Widget  Function()? castingWidget;
+  final Widget  Function()? pipWidget;
+  final Widget  Function()? favoritesWidget;
+  final Widget  Function()? timeLockWidget;
+  final Widget  Function()? lockWidget;
+
+
+
+  final Widget Function()? lockScreenWidget;
+  final VoidCallback? onLockScreen;
 
   const BetterPlayerControlsConfiguration({
     this.controlBarColor = Colors.black87,
@@ -215,7 +224,13 @@ class BetterPlayerControlsConfiguration {
     this.backgroundColor = Colors.black,
     this.overflowModalColor = Colors.white,
     this.overflowModalTextColor = Colors.black,
-    this.customControllerWidget,
+    this.castingWidget ,
+    this.pipWidget ,
+    this.favoritesWidget,
+    this.timeLockWidget,
+    this.lockWidget,
+    this.lockScreenWidget,
+    this.onLockScreen,
   });
 
   factory BetterPlayerControlsConfiguration.white() {
