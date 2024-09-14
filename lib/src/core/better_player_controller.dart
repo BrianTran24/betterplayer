@@ -1308,4 +1308,6 @@ class BetterPlayerController {
 
 
   VoidCallback? onLockScreen;
+
+
 }

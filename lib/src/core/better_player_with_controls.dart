@@ -108,7 +108,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     }
   }
 
-  Container _buildPlayerWithControls(
+  Widget _buildPlayerWithControls(
       BetterPlayerController betterPlayerController, BuildContext context) {
     final configuration = betterPlayerController.betterPlayerConfiguration;
     var rotation = configuration.rotation;
@@ -125,29 +125,32 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     final bool placeholderOnTop =
         betterPlayerController.betterPlayerConfiguration.placeholderOnTop;
     // ignore: avoid_unnecessary_containers
-    return Container(
-      child: Stack(
-        fit: StackFit.passthrough,
-        children: <Widget>[
-          if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
-          Transform.rotate(
-            angle: rotation * pi / 180,
-            child: _BetterPlayerVideoFitWidget(
-              betterPlayerController,
-              betterPlayerController.getFit(),
+    return Scaffold(
+      endDrawer:betterPlayerController.betterPlayerControlsConfiguration.endDrawer ,
+      body: Container(
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: <Widget>[
+            if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
+            Transform.rotate(
+              angle: rotation * pi / 180,
+              child: _BetterPlayerVideoFitWidget(
+                betterPlayerController,
+                betterPlayerController.getFit(),
+              ),
             ),
-          ),
-          betterPlayerController.betterPlayerConfiguration.overlay ??
-              Container(),
-          BetterPlayerSubtitlesDrawer(
-            betterPlayerController: betterPlayerController,
-            betterPlayerSubtitlesConfiguration: subtitlesConfiguration,
-            subtitles: betterPlayerController.subtitlesLines,
-            playerVisibilityStream: playerVisibilityStreamController.stream,
-          ),
-          if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
-          _buildControls(context, betterPlayerController),
-        ],
+            betterPlayerController.betterPlayerConfiguration.overlay ??
+                Container(),
+            BetterPlayerSubtitlesDrawer(
+              betterPlayerController: betterPlayerController,
+              betterPlayerSubtitlesConfiguration: subtitlesConfiguration,
+              subtitles: betterPlayerController.subtitlesLines,
+              playerVisibilityStream: playerVisibilityStreamController.stream,
+            ),
+            if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
+            _buildControls(context, betterPlayerController),
+          ],
+        ),
       ),
     );
   }

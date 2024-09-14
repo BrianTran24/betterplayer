@@ -172,6 +172,8 @@ class BetterPlayerControlsConfiguration {
   final Widget Function()? lockScreenWidget;
   final VoidCallback? onLockScreen;
 
+  final Widget? endDrawer;
+
   const BetterPlayerControlsConfiguration({
     this.controlBarColor = Colors.black87,
     this.textColor = Colors.white,
@@ -231,6 +233,7 @@ class BetterPlayerControlsConfiguration {
     this.lockWidget,
     this.lockScreenWidget,
     this.onLockScreen,
+    this.endDrawer,
   });
 
   factory BetterPlayerControlsConfiguration.white() {
